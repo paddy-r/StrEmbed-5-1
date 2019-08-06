@@ -10,8 +10,10 @@ import re
 # Interator for tallying contents of list, etc.
 from collections import Counter
 
-step_filename = 'Torch Assembly.STEP'
+# step_filename = 'E:/GrabCadData/Models/Step/Model00001.stp'
 
+#step_filename = 'C:/Users/prctha/Python/pyocc2/as1-oc-214.stp'
+step_filename = 'C:/Users/prctha/Desktop/Torch Assembly.STEP'
 
 
 nauo_lines          = []
@@ -21,6 +23,8 @@ prod_lines          = []
 
 line_hold = ''
 line_type = ''
+
+
 # Find all search lines
 with open(step_filename) as f:
     for line in f:
@@ -58,7 +62,22 @@ with open(step_filename) as f:
                 line_type = 'prod'
         else:
             prev_index = False
-            line_hold = line_hold + line.rstrip()
+            #TH: if end of file and previous line was held
+            if 'ENDSEC;' in line:
+                if line_hold:
+                    if line_type == 'nauo':
+                        nauo_lines.append(line_hold)
+                    elif line_type == 'prod_def':
+                        prod_def_lines.append(line_hold)
+                    elif line_type == 'prod_def_form':
+                        prod_def_form_lines.append(line_hold)
+                    elif line_type == 'prod':
+                        prod_lines.append(line_hold)
+                    line_hold = ''
+                    line_type = ''
+            else:
+                #TH: if not end of file
+                line_hold = line_hold + line.rstrip()
 
 
 
@@ -79,6 +98,40 @@ for j in range(len(prod_def_form_lines)):
 for j in range(len(prod_lines)):
     prod_refs.append([el.strip(',')           for el in prod_lines[j].replace(","," ").split()          if el.startswith('#')])
     prod_refs[j].append(prod_lines[j].split("'")[1])
+
+
+# Get first two items in each sublist (as third is shape ref)
+#
+# First item is 'PRODUCT_DEFINITION' ref
+# Second item is 'PRODUCT_DEFINITION_FORMATION <etc>' ref
+prod_all_refs = [el[:2] for el in prod_def_refs]
+
+# Match up all references down to level of product name
+for j in range(len(prod_all_refs)):
+    
+    # Add 'PRODUCT_DEFINITION' ref
+    for i in range(len(prod_def_form_refs)):
+        if prod_def_form_refs[i][0] == prod_all_refs[j][1]:
+            prod_all_refs[j].append(prod_def_form_refs[i][1])
+            break
+    
+    # Add names from 'PRODUCT_DEFINITION' lines
+    for i in range(len(prod_refs)):
+        if prod_refs[i][0] == prod_all_refs[j][2]:
+            prod_all_refs[j].append(prod_refs[i][2])
+            break
+
+
+
+# Find all parent and child relationships (3rd and 2nd item in each sublist)
+parent_refs = [el[1] for el in nauo_refs]
+child_refs  = [el[2] for el in nauo_refs]
+
+# Find distinct parts and assemblies via set operations; returns list, so no repetition of items
+all_type_refs  = set(child_refs) | set(parent_refs)
+ass_type_refs  = set(parent_refs)
+part_type_refs = set(child_refs) - set(parent_refs)
+
 
 
 
@@ -182,5 +235,4 @@ for i in range(len(nauo_refs)):
     if default_value in nauo_refs[i]:
         print('NAUO list level values not fully populated')
         break
-
 
