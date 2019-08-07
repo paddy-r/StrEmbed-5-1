@@ -8,29 +8,28 @@
 import re
 # Interator for tallying contents of list, etc.
 from collections import Counter
-# TH: Import anytree for drawing a tree stucture
-#from anytree import Node, RenderTree
+# TH: Import treelib for drawing a tree stucture
+# pip install --upgrade ete3
+from treelib import Node, Tree
+#TH: useful for working with files
+import os
+#TH: for exporting to json format
+import json
 
 # Various iterator/generator tools
 #import itertools
-
-
-# step_filename = 'E:/GrabCadData/Models/Step/Model00001.stp'
-
-#step_filename = 'C:/Users/prctha/Python/pyocc2/as1-oc-214.stp'
-step_filename = 'C:/Users/prctha/Desktop/Torch Assembly.STEP'
-
 
 
 class StepParse:
 	def __init__(self):
 		pass
 		
-	def load_step(self,step_filenamefile):
+	def load_step(self,step_filename):
 		self.nauo_lines          = []
 		self.prod_def_lines      = []
 		self.prod_def_form_lines = []
 		self.prod_lines          = []
+		self.filename = os.path.splitext(step_filename)[0]
 
 		line_hold = ''
 		line_type = ''
@@ -107,7 +106,7 @@ class StepParse:
 		for j in range(len(self.prod_def_form_lines)):
 			self.prod_def_form_refs.append([el.rstrip(',') for el in self.prod_def_form_lines[j].replace(","," ").split() if el.startswith('#')])
 		for j in range(len(self.prod_lines)):
-			self.prod_refs.append([el.strip(',')           for el in self.prod_lines[j].replace(","," ").split()          if el.startswith('#')])
+			self.prod_refs.append([el.strip(',')           for el in self.prod_lines[j].replace(","," ").replace("("," ").split()          if el.startswith('#')])
 			self.prod_refs[j].append(self.prod_lines[j].split("'")[1])
 
 
@@ -177,8 +176,12 @@ class StepParse:
 		self.all_type_refs  = set(self.child_refs) | set(self.parent_refs)
 		self.ass_type_refs  = set(self.parent_refs)
 		self.part_type_refs = set(self.child_refs) - set(self.parent_refs)
+		#TH: find root node
+		self.root_type_refs = set(self.parent_refs) - set(self.child_refs)
+		self.create_dict()
 
 	def show_values(self):
+		# TH: basic testing, if needed these could be spilt up
 		print(self.nauo_lines)
 		print(self.prod_def_lines)
 		print(self.prod_def_form_lines)
@@ -187,3 +190,67 @@ class StepParse:
 		print(self.prod_def_refs)
 		print(self.prod_def_form_refs)
 		print(self.prod_refs)
+		
+	def create_dict(self):
+		# TH: links nauo number with a name and creates dict
+		self.part_dict  = {}
+		for part in self.all_type_refs:
+			for sublist in self.prod_def_refs:
+				if sublist[0] == part:
+					prod_loc = '#' + re.findall('\d+',sublist[1])[0]
+					pass
+			for sublist in self.prod_def_form_refs:
+				if sublist[0] == prod_loc:
+					prod_loc = '#' + str(re.findall('\d+',sublist[1])[0])
+					pass
+			for sublist in self.prod_refs:
+				if sublist[0] == prod_loc:
+					part_name = sublist[2]
+					
+			self.part_dict[part] = part_name
+			
+	def create_tree(self):
+		#TH: create tree diagram in newick format 
+		#TH: find root node
+		
+		self.tree = Tree()
+		root_node_ref = list(self.root_type_refs)[0]
+		self.tree.create_node(self.part_dict[ root_node_ref ] , 0)
+		
+		#TH: created root node now fill in next layer
+		#TH: create dict for tree, as each node needs a unique name
+		i = [0] # itirates through nodes
+		self.tree_dict = {}
+		self.tree_dict[i[0]] = root_node_ref
+		def tree_next_layer(self,parent):
+			root_node = self.tree_dict[i[0]]
+			for line in self.nauo_refs:
+				if line[1] == root_node:
+					i[0] += 1
+					self.tree_dict[i[0]] = str( line[2] )
+					self.tree.create_node( self.part_dict[ line[2] ], i[0] , parent=parent)
+					tree_next_layer(self,i[0])
+		tree_next_layer(self,0) 
+		
+	def print_tree(self):
+		try:
+			self.tree.show()
+		except:
+			self.create_tree()
+			self.tree.show()
+			
+	def tree_to_json(self,save_to_file=False,filename='file',path=''):
+		#TH: return json format tree, can also save to file
+		data = self.tree.to_json()
+		j = json.loads(data)
+		if save_to_file==True:
+			if path:
+				file_path = os.path.join(path,filename)
+			else:
+				file_path = filename
+			
+			with open(file_path + '.json', 'w') as outfile:
+				json.dump(j, outfile)
+			
+		return data
+		

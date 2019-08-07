@@ -1,11 +1,12 @@
 #TH: step_parse module test
 
-import step_parse
+from step_parse import StepParse
 
-step_filename = 'C:/Users/prctha/Desktop/Torch Assembly.STEP'
+#step_filename = '../examples/models/Torch Assembly.STEP'
+step_filename = '../examples/models/as1-oc-214.stp'
 
-step = step_parse.StepParse()
+step = StepParse()
 
 step.load_step(step_filename)
 
-step.show_values()
+step.print_tree()
