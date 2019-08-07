@@ -99,14 +99,15 @@ class StepParse:
 		# TH: added 'replace(","," ").' to replace ',' with a space to make the spilt easier if there are not spaces inbetween the words'
 
 		# Find all (# hashed) line references and product names
+		# TH: it might be worth finding a different way of extracting data we do want rather than fixes to get rid of the data we don't
 		for j in range(len(self.nauo_lines)):
-			self.nauo_refs.append([el.rstrip(',')          for el in self.nauo_lines[j].replace(","," ").split()          if el.startswith('#')])
+			self.nauo_refs.append([el.rstrip(',')          for el in self.nauo_lines[j].replace(","," ").replace("="," ").split()          if el.startswith('#')])
 		for j in range(len(self.prod_def_lines)):
-			self.prod_def_refs.append([el.rstrip(',')      for el in self.prod_def_lines[j].replace(","," ").split()      if el.startswith('#')])
+			self.prod_def_refs.append([el.rstrip(',')      for el in self.prod_def_lines[j].replace(","," ").replace("="," ").split()      if el.startswith('#')])
 		for j in range(len(self.prod_def_form_lines)):
-			self.prod_def_form_refs.append([el.rstrip(',') for el in self.prod_def_form_lines[j].replace(","," ").split() if el.startswith('#')])
+			self.prod_def_form_refs.append([el.rstrip(',') for el in self.prod_def_form_lines[j].replace(","," ").replace("="," ").split() if el.startswith('#')])
 		for j in range(len(self.prod_lines)):
-			self.prod_refs.append([el.strip(',')           for el in self.prod_lines[j].replace(","," ").replace("("," ").split()          if el.startswith('#')])
+			self.prod_refs.append([el.strip(',')           for el in self.prod_lines[j].replace(","," ").replace("("," ").replace("="," ").split()          if el.startswith('#')])
 			self.prod_refs[j].append(self.prod_lines[j].split("'")[1])
 
 
