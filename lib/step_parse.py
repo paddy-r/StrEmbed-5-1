@@ -215,6 +215,10 @@ class StepParse:
 		#TH: find root node
 		
 		self.tree = Tree()
+		#TH: check if there are any parts to make a tree from, if not don't bother
+		if self.part_dict == {}:
+			return
+			
 		root_node_ref = list(self.root_type_refs)[0]
 		self.tree.create_node(self.part_dict[ root_node_ref ] , 0)
 		
@@ -242,16 +246,19 @@ class StepParse:
 			
 	def tree_to_json(self,save_to_file=False,filename='file',path=''):
 		#TH: return json format tree, can also save to file
-		data = self.tree.to_json()
-		j = json.loads(data)
-		if save_to_file==True:
-			if path:
-				file_path = os.path.join(path,filename)
-			else:
-				file_path = filename
-			
-			with open(file_path + '.json', 'w') as outfile:
-				json.dump(j, outfile)
-			
-		return data
-		
+		if self.tree.size() != 0:
+			data = self.tree.to_json()
+			j = json.loads(data)
+			if save_to_file==True:
+				if path:
+					file_path = os.path.join(path,filename)
+				else:
+					file_path = filename
+				
+				with open(file_path + '.json', 'w') as outfile:
+					json.dump(j, outfile)
+				
+			return data
+		else:
+			print("no tree to print")
+			return
