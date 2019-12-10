@@ -1,7 +1,8 @@
 # DCS-project
 <b>Design configuration spaces</b>
 
-Hugh Rice (HR/HPR) and Tom Hazlehurst (TH) 10/12/2019  
+Hugh Rice (HR/HPR) and Tom Hazlehurst (TH)  
+March-December 2019  
 School of Mechanical Engineering  
 University of Leeds  
 LS2 9JT
