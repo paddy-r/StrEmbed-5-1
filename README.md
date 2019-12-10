@@ -20,5 +20,6 @@ Two scripts are required:
 
 StrEmbed-5 was developed in Spyder, an IDE for packaged with the Anaconda distribution, which can be downloaded [here](https://www.anaconda.com/distribution/).
 
-STEP files are used for data transfer and several examples are provided in the 'XX' folder  
+STEP files are used for data transfer and several examples are provided in the 'XX' folder
+
 In addition, for the torch example, part images are given in the 'Images' folder, where image names correspond to their product definitions in the STEP file; they are currently pre-rendered but will be generated automatically in the next version
