@@ -1,5 +1,5 @@
 # DCS-project
-<b>Design configuration spaces</b>
+<b>Design Configuration Spaces</b>
 
 Hugh Rice (HR/HPR) and Tom Hazlehurst (TH)  
 March-December 2019
