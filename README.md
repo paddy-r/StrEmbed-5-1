@@ -1,5 +1,5 @@
 # DCS-project
-<b>Design configuration spaces<\b>
+<b>Design configuration spaces</b>
 
 Hugh Rice December 2019
 
