@@ -11,3 +11,8 @@ h.p.rice@leeds.ac.uk
 <i>Instructions for use of StrEmbed-5-1
 StrEmbed-5 is written in Python and uses the modules listed in the "Requirements" document</i>
 
+Two scripts are required:
+1. StrEmbed_5_1
+2. step_parse_5_1
+
+StrEmbed-5 was developed in Spyder, an IDE for packaged with the Anaconda distribution, which can be downloaded [here](https://www.anaconda.com/distribution/).
