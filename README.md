@@ -10,8 +10,8 @@ LS2 9JT
 h.p.rice@leeds.ac.uk
 
 <i>Instructions for use of StrEmbed-5-1  
-StrEmbed-5 is written in Python and uses the modules listed in the "Requirements" document</i>  
-A graphical user interface for visualisation and manipulation of part-whole relationships in assemblies of parts  
+StrEmbed-5 is written in Python and uses the modules listed in the "Requirements" document  
+A graphical user interface for visualisation and manipulation of part-whole relationships in assemblies of parts</i>  
 
 Two scripts are required:
 1. StrEmbed_5_1
