@@ -9,6 +9,7 @@
 ### ---
 
 
+
 # WX stuff
 import wx
 # WX customtreectrl for parts list
@@ -367,7 +368,7 @@ class MainWindow(wx.Frame):
             # Update global list and dict
             self.checked_items.remove(item)
             self.button_dict.pop(id_)
-            self.button_dict_inv.pop(item)
+            self.button_dict_inv.pop(obj)
            
         # Update image sizer
         self.geom_sizer.Layout()
@@ -451,6 +452,10 @@ class MainWindow(wx.Frame):
 #        node_labels = nx.get_node_attributes(self.assembly.g, 'label')
         
         # Draw to lattice panel figure
+        try:
+            self.latt_axes.clear()
+        except:
+            pass
         nx.draw(self.assembly.g, pos, node_color = colour_map, with_labels = True, ax = self.latt_axes)
 #        nx.draw_networkx_labels(self.assembly.g, pos, labels = node_labels, ax = self.latt_axes)
 
@@ -510,12 +515,19 @@ class MainWindow(wx.Frame):
         # Show parts list and lattice
         self.DisplayPartsList()
         
-        # Plot lattice based on loaded STEP data
+        # Clear geometry window if necessary
+        try:
+            self.geom_sizer.Clear(True)
+        except:
+            pass    
+        
+        # Clear lattice plot if necessary
         try:
             self.latt_axes.clear()
         except:
             pass
         
+        # Display lattice
         self.DisplayLattice()
 
 
