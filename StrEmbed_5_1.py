@@ -563,7 +563,20 @@ class MainWindow(wx.Frame):
     def OnAbout(self, event):
 
         # Show program info
-        abt = wx.MessageDialog(self, "Creator: Hugh Rice 2019", "About PyStrEmbed-1", wx.OK)
+        abt_text = """StrEmbed-5-1: A user interface for manipulation of design configurations\n
+            Copyright (C) 2019 Hugh Patrick Rice\n
+            This program is free software: you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation, either version 3 of the License, or
+            (at your option) any later version.\n
+            This program is distributed in the hope that it will be useful,
+            but WITHOUT ANY WARRANTY; without even the implied warranty of
+            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+            GNU General Public License for more details.\n
+            You should have received a copy of the GNU General Public License
+            along with this program. If not, see <https://www.gnu.org/licenses/>."""
+ 
+        abt = wx.MessageDialog(self, abt_text, 'About StrEmbed-5-1', wx.OK)
         abt.ShowModal()         # Shows dialogue that stops process (modal)
         abt.Destroy()
 
