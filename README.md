@@ -12,6 +12,8 @@ h.p.rice@leeds.ac.uk
 
 <i> StrEmbed-5 is a graphical user interface for visualisation and manipulation of part-whole relationships in assemblies of parts. It is written in Python and uses the modules listed in the "requirements" document. Functionality is based on [StrEmbed-4](https://github.com/hhchau/StrEmbed-4) (and earlier versions) by Hau Hing Chau, written in Perl.</i>  
 
+This research is supported by the UK Engineering and Physical Sciences Research Council (EPSRC) under grant number EP/S016406/1.
+
 Two scripts are required:
 1. StrEmbed_5_1
 2. step_parse_5_1
