@@ -1,6 +1,8 @@
 # DCS-project
 <b>Design Configuration Spaces</b>
 
+[![name](https://zenodo.org/badge/200821545.svg)](http://doi.org/10.5281/zenodo.4555832)
+
 Hugh Rice (HR/HPR) and Tom Hazlehurst (TH)  
 March-December 2019
 
